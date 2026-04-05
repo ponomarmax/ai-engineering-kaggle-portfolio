@@ -49,6 +49,51 @@ Each approach contains:
 4. Add stronger or alternative approaches in separate `approaches/*` folders.
 5. Summarize what the task demonstrates for your portfolio.
 
+## Root workflow
+
+The Python environment is shared for the whole repository and lives in the root as `.venv`.
+
+Create it once:
+
+```text
+make setup
+```
+
+Open a shell with that environment activated:
+
+```text
+make shell
+```
+
+Then work inside any task folder directly:
+
+```text
+cd courses/01-machine-learning-with-python/tasks/task-house-prices
+make setup
+make run
+make submit
+```
+
+## Debugging
+
+Workflow:
+
+```text
+make setup
+```
+
+Then run the VS Code launch config:
+
+```text
+Python: Active File (root venv)
+```
+
+It will:
+
+- use the root `.venv`
+- start from the folder of the currently opened file
+- run in the integrated terminal
+
 ## Naming conventions
 
 - Course folders: `NN-short-course-name`

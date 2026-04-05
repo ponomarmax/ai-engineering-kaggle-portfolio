@@ -10,6 +10,10 @@ __pycache__/
 .venv/
 venv/
 
+# Local secrets
+.env.kaggle
+.current-task
+
 # Data and artifacts
 data/
 outputs/
