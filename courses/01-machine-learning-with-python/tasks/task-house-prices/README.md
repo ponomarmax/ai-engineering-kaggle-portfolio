@@ -23,19 +23,35 @@
 
 ## Current structure
 
-- `main.py` - чистий baseline training script для локального запуску і генерації submission
-- `notes/learning-journal.md` - ключові спостереження, які з'явилися під час першого проходу по даних
+- `main.py` - numeric baseline pipeline + experiment runner for feature comparisons
+- `eda.ipynb` - основний EDA notebook з numeric і non-numeric analysis
+- `notes/decision.txt` - чорнові рішення по групуванню фіч
+- `notes/experiments.txt` - короткі замітки про попередні експерименти
+- `notes/learning-journal.md` - ключові спостереження під час проходу по даних
 - `notes/submission-log.md` - коротка історія сабмітів і змін між ними
 - `submissions/` - згенеровані файли для Kaggle
 
 ## Current baseline
 
-- використовує тільки числові ознаки
+- використовує тільки явно оголошені numeric baseline features
+- підтримує `log1p`, `Has*` indicators і явне виключення forgotten features
 - заповнює пропуски медіаною
 - масштабує фічі через `StandardScaler`
 - навчає `LinearRegression`
 
-Це не "найкраща" модель, а свідомо простий, зрозумілий стартовий baseline, від якого легко рухатися далі.
+Це все ще не "фінальна найкраща модель", а акуратний експериментальний baseline, від якого зручно рухатися далі.
+
+## Experiment workflow
+
+- базові фічі задаються через групи на початку `main.py`
+- forgotten features не додаються мовчки в baseline
+- експерименти описуються через `ExperimentConfig`
+- можна тестувати:
+  - додавання окремих фіч поверх baseline
+  - `log1p` для конкретних колонок
+  - `Has*` indicators
+  - комбіновані фічі на кшталт `TotalArea`
+- результати друкуються як компактна таблиця для порівняння
 
 ## Why this format works
 

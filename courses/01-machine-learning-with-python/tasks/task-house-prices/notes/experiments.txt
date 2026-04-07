@@ -1,0 +1,134 @@
+Validation R^2: 0.8269 при всіх нумерованих фічах
+
+Тоді permutation_importance показав
+          feature  importance_mean  importance_std
+3     OverallQual         0.211089        0.014506
+15      GrLivArea         0.075120        0.007427
+25     GarageCars         0.055596        0.005981
+12       1stFlrSF         0.034000        0.002721
+5       YearBuilt         0.032380        0.003974
+22   TotRmsAbvGrd         0.027949        0.004721
+13       2ndFlrSF         0.023801        0.004442
+0      MSSubClass         0.020607        0.003349
+7      MasVnrArea         0.015429        0.001944
+20   BedroomAbvGr         0.012744        0.004314
+11    TotalBsmtSF         0.010471        0.001144
+24    GarageYrBlt         0.010196        0.003938
+8      BsmtFinSF1         0.009184        0.002172
+23     Fireplaces         0.006948        0.000884
+4     OverallCond         0.006807        0.002757
+2         LotArea         0.006620        0.001376
+16   BsmtFullBath         0.006178        0.003642
+27     WoodDeckSF         0.004375        0.001022
+31    ScreenPorch         0.003438        0.001491
+26     GarageArea         0.003064        0.000891
+6    YearRemodAdd         0.002672        0.001521
+21   KitchenAbvGr         0.002117        0.001044
+18       FullBath         0.002091        0.000740
+35         YrSold         0.000400        0.000324
+29  EnclosedPorch         0.000296        0.000253
+9      BsmtFinSF2         0.000051        0.000170
+33        MiscVal         0.000012        0.000016
+19       HalfBath        -0.000022        0.000478
+34         MoSold        -0.000194        0.000171
+32       PoolArea        -0.000255        0.000185
+17   BsmtHalfBath        -0.000502        0.000123
+30      3SsnPorch        -0.000532        0.000677
+28    OpenPorchSF        -0.000592        0.000158
+14   LowQualFinSF        -0.000662        0.000520
+10      BsmtUnfSF        -0.000748        0.000330
+1     LotFrontage        -0.005685        0.002286
+
+Спробую видалити всі відємні фічі
+    colums_with_negation_permussion_importance = ['HalfBath', 'MoSold', 'PoolArea', 'YrSold','BsmtHalfBath', '3SsnPorch', 'OpenPorchSF', 'LowQualFinSF', 'BsmtUnfSF', 'LotFrontage']
+    X = X.drop(columns=colums_with_negation_permussion_importance)
+
+Став Validation R^2: 0.8305
+
+Спробую ще видалити всі в яких порядок до другого числа - результат - зміна не значна
+
+Спробую логарифмуфати таргет валью, так як ціна будинків має несемитричний правостроній розподіл. Це дозвоилть зменшити вплив викидів, стабілізувати розподіл та зробити залежність лінійною
+Validation R^2: 0.8764
+Схоже це дало результат
+Але повторне видалення фічей які мали importance_mean відємний не дав результату
+
+
+Порахую кількість нульових значеннь для колонок цифрових
+Columns with 0 values:
+PoolArea         1453
+3SsnPorch        1436
+LowQualFinSF     1434
+MiscVal          1408
+BsmtHalfBath     1378
+ScreenPorch      1344
+BsmtFinSF2       1293
+EnclosedPorch    1252
+HalfBath          913
+
+
+MasVnrArea        861
+BsmtFullBath      856
+2ndFlrSF          829
+WoodDeckSF        761
+Fireplaces        690
+OpenPorchSF       656
+BsmtFinSF1        467
+BsmtUnfSF         118
+GarageCars         81
+GarageArea         81
+TotalBsmtSF        37
+FullBath            9
+BedroomAbvGr        6
+KitchenAbvGr        1
+MoSold              0
+MSSubClass          0
+GarageYrBlt         0
+TotRmsAbvGrd        0
+LotFrontage         0
+GrLivArea           0
+1stFlrSF            0
+YearRemodAdd        0
+YearBuilt           0
+OverallCond         0
+OverallQual         0
+LotArea             0
+YrSold              0
+dtype: int64
+Columns with NaN values:
+LotFrontage      259
+GarageYrBlt       81
+MasVnrArea         8
+WoodDeckSF         0
+BedroomAbvGr       0
+KitchenAbvGr       0
+TotRmsAbvGrd       0
+Fireplaces         0
+GarageCars         0
+GarageArea         0
+MSSubClass         0
+HalfBath           0
+EnclosedPorch      0
+3SsnPorch          0
+ScreenPorch        0
+PoolArea           0
+MiscVal            0
+MoSold             0
+OpenPorchSF        0
+FullBath           0
+BsmtHalfBath       0
+BsmtFullBath       0
+GrLivArea          0
+LowQualFinSF       0
+2ndFlrSF           0
+1stFlrSF           0
+TotalBsmtSF        0
+BsmtUnfSF          0
+BsmtFinSF2         0
+BsmtFinSF1         0
+YearRemodAdd       0
+YearBuilt          0
+OverallCond        0
+OverallQual        0
+LotArea            0
+YrSold             0
+dtype: int64
