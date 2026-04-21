@@ -18,7 +18,7 @@ MESSAGE ?= simple baseline
 help:
 	@echo "make setup   - create root virtualenv and install dependencies"
 	@echo "make download - download and extract Kaggle competition data into data/raw/"
-	@echo "make run     - run main.py"
+	@echo "make run     - run src/main.py"
 	@echo 'make submit  - submit submissions/submission.csv using root .env.kaggle; optional MESSAGE="..."'
 	@echo "make clean   - remove generated submission"
 
@@ -36,7 +36,7 @@ download:
 	fi
 
 run:
-	$(PYTHON) main.py
+	$(PYTHON) src/main.py
 
 submit:
 	@if [ -f "$(KAGGLE_ENV)" ]; then source "$(KAGGLE_ENV)"; fi; \
