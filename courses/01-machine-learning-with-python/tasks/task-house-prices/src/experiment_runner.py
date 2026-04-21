@@ -31,12 +31,16 @@ from utils import (
 )
 
 
-def apply_feature_builders(df: pd.DataFrame, feature_names: list[str]) -> pd.DataFrame:
+def apply_feature_builders(
+    df: pd.DataFrame,
+    feature_names: list[str],
+    ordinal_mappings: dict[str, dict[object, int]] | None = None,
+) -> pd.DataFrame:
     result = df.copy()
     for feature_name in feature_names:
         if feature_name not in FEATURE_BUILDERS:
             raise ValueError(f"Unknown derived feature: {feature_name}")
-        result = FEATURE_BUILDERS[feature_name](result)
+        result = FEATURE_BUILDERS[feature_name](result, ordinal_mappings)
     return result
 
 
@@ -55,10 +59,14 @@ def run_experiment(base_config: ProjectConfig, experiment: ExperimentConfig) -> 
     ensure_directories(base_config)
     train_df, test_df = load_datasets(base_config)
 
-    derived_features = resolve_derived_features(experiment.derived_feature_groups, experiment.derived_features)
-    train_df = apply_feature_builders(train_df, derived_features)
+    derived_features = resolve_derived_features(
+        experiment.derived_feature_groups,
+        experiment.derived_features,
+        experiment.add_columns,
+    )
+    train_df = apply_feature_builders(train_df, derived_features, base_config.ordinal_mappings)
     if test_df is not None:
-        test_df = apply_feature_builders(test_df, derived_features)
+        test_df = apply_feature_builders(test_df, derived_features, base_config.ordinal_mappings)
 
     experiment_config = project_config_from_experiment(base_config, experiment)
 

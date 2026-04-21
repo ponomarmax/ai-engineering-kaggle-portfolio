@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field, replace
 
 from config import ProjectConfig
-from feature_builders import DERIVED_FEATURE_GROUPS
+from feature_builders import DERIVED_FEATURE_GROUPS, FEATURE_BUILDERS
 from feature_registry import FEATURE_GROUPS
 from processing_config import CategoricalProcessingConfig, NumericProcessingConfig, OrdinalProcessingConfig
 
@@ -41,7 +41,11 @@ def resolve_columns(group_names: list[str], add_columns: list[str], drop_columns
     return [column for column in resolved if column not in set(drop_columns)]
 
 
-def resolve_derived_features(group_names: list[str], feature_names: list[str]) -> list[str]:
+def resolve_derived_features(
+    group_names: list[str],
+    feature_names: list[str],
+    additional_feature_names: list[str] | None = None,
+) -> list[str]:
     resolved: list[str] = []
     for group_name in group_names:
         if group_name not in DERIVED_FEATURE_GROUPS:
@@ -53,6 +57,11 @@ def resolve_derived_features(group_names: list[str], feature_names: list[str]) -
     for feature_name in feature_names:
         if feature_name not in resolved:
             resolved.append(feature_name)
+
+    if additional_feature_names is not None:
+        for feature_name in additional_feature_names:
+            if feature_name in FEATURE_BUILDERS and feature_name not in resolved:
+                resolved.append(feature_name)
 
     return resolved
 

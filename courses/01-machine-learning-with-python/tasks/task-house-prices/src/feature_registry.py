@@ -139,6 +139,8 @@ FEATURE_GROUPS: dict[str, list[str]] = {
         "KitchenQual",
         "Functional",
         "GarageFinish",
+        "GarageQual",
+        "GarageCond",
         "PavedDrive",
     ],
     "categorical_all": CATEGORICAL_FEATURES,
