@@ -51,6 +51,14 @@ The goal is to preserve the reasoning behind each step, not only the final score
 - Best result: `random_forest`, RMSE `31419.111`, MAE `18064.901`, R² `0.829876`
 - Conclusion: `HasGarage` was weaker than the original `GarageCars` + `GarageArea` pair. It may still be useful as a compact indicator, but not as a replacement for the stronger garage features.
 
+## Experiment: `6 - Add GarageAge(transform=none+quantile)-GarageYrBlt`
+
+- Hypothesis: `GarageAge = YrSold - GarageYrBlt` may capture garage recency better than a binary garage-presence flag.
+- Change: replaced `HasGarage` inside the engineered core with `GarageAge`; kept the rest of the stronger baseline structure; dropped raw `GarageYrBlt`; used constant imputation with quantile scaling for `GarageAge`.
+- Models: `linear_regression`, `ridge`, `lasso`, `random_forest`
+- Best result: `random_forest`, RMSE `30422.443`, MAE `17889.572`, R² `0.842771`
+- Conclusion: `GarageAge` fit the stronger baseline much better than `HasGarage` and stayed close to the best `TotalSF`-focused setups. It is a more informative engineered garage feature than the earlier binary indicator.
+
 ## Experiment: `playground_custom_experiment`
 
 - Hypothesis: keep the strongest current feature set together and inspect preprocessing behavior before locking changes into a more formal experiment.
@@ -64,11 +72,11 @@ The goal is to preserve the reasoning behind each step, not only the final score
 - `random_forest` has been the strongest model in every saved experiment so far.
 - `TotalSF` is a useful engineered feature and has held up across multiple variants.
 - `GarageCars` and `GarageArea` are stronger as separate signals than as a single ratio feature.
-- `HasGarage` is understandable and easy to inspect, but it does not replace the richer signal carried by garage size and capacity.
+- `GarageAge` is a stronger garage-focused engineered feature than `HasGarage` and is a better fit for the current engineered core.
 - Preprocessing changes matter, but in these runs the feature definition mattered more than the transform applied to that feature.
 
 ## Next experiments worth trying
 
 - Keep `GarageArea` and `GarageCars` together, then add `GarageAreaPerCar` as an extra feature instead of a replacement.
-- Compare `GarageCars + GarageArea` against `GarageCars + GarageArea + HasGarage` to test whether the binary flag adds anything once the stronger garage features are already present.
+- Compare `GarageAge` against the raw `GarageYrBlt` column directly to confirm whether the engineered age form is consistently more useful.
 - Test one garage-focused experiment at a time while keeping the rest of the feature set fixed, so the result is easier to interpret.
