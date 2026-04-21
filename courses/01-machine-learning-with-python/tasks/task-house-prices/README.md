@@ -256,3 +256,16 @@ Example experiment idea:
 - Cross-validation and permutation importance usually answer more practical questions: “Does this help prediction?” and “Does this still help after the rest of the pipeline is present?”
 - A weak feature on its own can still help in combination with others, especially for nonlinear models.
 - Multicollinearity matters more for interpreting linear coefficients than for tree-based models, although redundancy can still affect stability and efficiency.
+## Research Notes
+
+Use these files for the project story and experiment history:
+
+- `notes/research-log.md` is the main canonical research log
+- `notes/learning-journal.md` is for informal study notes and reflections
+- `notes/submission-log.md` is for submission tracking
+
+Recommended workflow:
+
+- record each meaningful experiment and conclusion in `notes/research-log.md`
+- treat notebook outputs and saved experiment folders as supporting evidence
+- avoid creating new ad hoc decision files when the same information belongs in the research log
