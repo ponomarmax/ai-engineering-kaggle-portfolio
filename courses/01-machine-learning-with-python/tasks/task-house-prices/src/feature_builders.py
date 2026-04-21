@@ -34,18 +34,14 @@ def add_garage_area_per_car(
     return result
 
 
-def add_has_garage(
-    df: pd.DataFrame,
-    ordinal_mappings: dict[str, dict[Any, int]] | None = None,
-) -> pd.DataFrame:
-    result = df.copy()
-    result["HasGarage"] = (result["GarageArea"] > 0).astype(int)
-    return result
-
-
 def add_house_age(df: pd.DataFrame, ordinal_mappings: dict[str, dict[Any, int]] | None = None) -> pd.DataFrame:
     result = df.copy()
     result["HouseAge"] = result["YrSold"] - result["YearBuilt"]
+    return result
+
+def add_garage_age(df: pd.DataFrame, ordinal_mappings: dict[str, dict[Any, int]] | None = None) -> pd.DataFrame:
+    result = df.copy()
+    result["GarageAge"] = result["YrSold"] - result["GarageYrBlt"]
     return result
 
 
@@ -181,11 +177,11 @@ def build_multi_ordinal_numeric_interaction(
 FEATURE_BUILDERS: dict[str, BuilderFn] = {
     "TotalSF": add_total_sf,
     "HouseAge": add_house_age,
+    "GarageAge": add_garage_age,
     "RemodAge": add_remod_age,
     "TotalBathrooms": add_total_bathrooms,
     "TotalPorchSF": add_total_porch_sf,
     "GarageAreaPerCar": add_garage_area_per_car,
-    "HasGarage": add_has_garage,
     "GarageQual_x_GarageArea": build_ordinal_numeric_interaction(
         "GarageQual_x_GarageArea",
         "GarageQual",
@@ -220,8 +216,8 @@ FEATURE_BUILDERS: dict[str, BuilderFn] = {
 
 
 DERIVED_FEATURE_GROUPS: dict[str, list[str]] = {
-    "engineered_core": ["TotalSF", "HouseAge", "TotalBathrooms", "HasGarage"],
-    "engineered_extended": ["TotalSF", "HouseAge", "RemodAge", "TotalBathrooms", "TotalPorchSF", "HasGarage"],
+    "engineered_core": ["TotalSF", "HouseAge", "TotalBathrooms", "GarageAge"],
+    "engineered_extended": ["TotalSF", "HouseAge", "GarageAge", "RemodAge", "TotalBathrooms", "TotalPorchSF"],
     "garage_interactions": [
         "GarageQual_x_GarageArea",
         "GarageCond_x_GarageArea",
